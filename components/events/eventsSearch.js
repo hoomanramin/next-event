@@ -1,20 +1,30 @@
+import {useRef} from "react";
 import Buttons from "../ui/buttons";
+import classes from "./eventsSearch.module.css";
 
 const EventsSearch = props => {
+  const yearInput = useRef();
+  const monthInput = useRef();
+  const submitHandler = e => {
+    e.preventDefault();
+    const selectedYear = yearInput.current.value;
+    const selectedMonth = monthInput.current.value;
+    props.onSearch(selectedYear, selectedMonth);
+  };
   return (
-    <form>
-      <div>
-        <div>
-          <lable htmlfor="year">Year</lable>
-          <select name="year" id="year">
+    <form className={classes.form} onSubmit={submitHandler}>
+      <div className={classes.controls}>
+        <div className={classes.control}>
+          <lable htmlFor="year">Year</lable>
+          <select id="year" ref={yearInput}>
             <option value="2021">2021</option>
             <option value="2022">2022</option>
           </select>
         </div>
-        <div>
-          <lable htmlfor="month">Month</lable>
-          <select name="month" id="month">
-            <option value="January">January</option>
+        <div className={classes.control}>
+          <lable htmlFor="month">Month</lable>
+          <select id="month" ref={monthInput}>
+            <option value="1">January</option>
             <option value="2">February</option>
             <option value="3">March</option>
             <option value="4">April</option>
@@ -29,7 +39,7 @@ const EventsSearch = props => {
           </select>
         </div>
       </div>
-      <Buttons>Find Events</Buttons>
+      <Buttons onClick={submitHandler}>Find Events</Buttons>
     </form>
   );
 };
