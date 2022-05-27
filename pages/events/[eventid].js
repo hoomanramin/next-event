@@ -1,15 +1,16 @@
-import {useRouter} from "next/router";
 import EventSummary from "../../components/eventDetails/eventSummary";
 import EventLogistics from "../../components/eventDetails/eventLogistics";
 import EventContent from "../../components/eventDetails/eventContent";
-import {getEventById} from "../../dummy-data";
+import {getEventById, getFeaturedEvents} from "../../helper/api-utils";
 
-const EventsDetails = () => {
-  const router = useRouter();
-  const eventid = router.query.eventid;
-  const event = getEventById(eventid);
+const EventsDetails = props => {
+  const event = props.event;
   if (!event) {
-    return <p>There Is No Event</p>;
+    return (
+      <div className="center">
+        <p>Loading....</p>
+      </div>
+    );
   }
   return (
     <>
@@ -28,3 +29,30 @@ const EventsDetails = () => {
 };
 
 export default EventsDetails;
+
+export const getStaticProps = async ctx => {
+  const eventId = ctx.params.eventid;
+  const eventsDetail = await getEventById(eventId);
+  if (!eventsDetail) {
+    return {
+      props: {
+        event: null,
+      },
+    };
+  }
+  return {
+    props: {
+      event: eventsDetail,
+    },
+    revalidate: 30,
+  };
+};
+
+export const getStaticPaths = async () => {
+  const events = await getFeaturedEvents();
+  const paths = events.map(event => ({params: {eventid: event.id}}));
+  return {
+    paths: paths,
+    fallback: "blocking",
+  };
+};
