@@ -21,7 +21,7 @@ export default Events;
 
 export const getStaticProps = async () => {
   const allEvents = await getAllEvents();
-  console.log(allEvents);
+
   return {
     props: {
       allEvents: allEvents,

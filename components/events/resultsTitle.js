@@ -10,7 +10,7 @@ function ResultsTitle({date}) {
   return (
     <section className={classes.title}>
       <h1>Events in {humanReadableDate}</h1>
-      <Buttons link="/events">Show all events</Buttons>
+      <Buttons url="/events">Show all events</Buttons>
     </section>
   );
 }
