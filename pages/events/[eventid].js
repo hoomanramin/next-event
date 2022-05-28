@@ -2,6 +2,7 @@ import EventSummary from "../../components/eventDetails/eventSummary";
 import EventLogistics from "../../components/eventDetails/eventLogistics";
 import EventContent from "../../components/eventDetails/eventContent";
 import {getEventById, getFeaturedEvents} from "../../helper/api-utils";
+import Head from "next/head";
 
 const EventsDetails = props => {
   const event = props.event;
@@ -14,6 +15,10 @@ const EventsDetails = props => {
   }
   return (
     <>
+      <Head>
+        <title>{event.title}</title>
+        <meta name="description" content={event.description} />
+      </Head>
       <EventSummary title={event.title} />
       <EventLogistics
         date={event.date}

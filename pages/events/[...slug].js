@@ -4,8 +4,8 @@ import {useRouter} from "next/router";
 import ResultsTitle from "../../components/events/resultsTitle";
 import Buttons from "../../components/ui/buttons";
 import ErrorAlert from "../../components/ui/errorAlert";
-import {getFilteredEvents} from "../../helper/api-utils";
 import useSWR from "swr";
+import Head from "next/head";
 
 const EventsFilter = () => {
   const [loadedEvents, setLoadedEvents] = useState();
@@ -31,12 +31,33 @@ const EventsFilter = () => {
   }, [data]);
 
   if (!loadedEvents) {
-    return <h1 className="center">...Loading</h1>;
+    return (
+      <>
+        <h1 className="center">...Loading</h1>
+      </>
+    );
   }
 
   const filteredYear = +searchItem[0];
   const filteredMonth = +searchItem[1];
+  const filteredEvents = loadedEvents.filter(event => {
+    const eventDate = new Date(event.date);
+    return (
+      eventDate.getFullYear() === filteredYear &&
+      eventDate.getMonth() === filteredMonth - 1
+    );
+  });
 
+  const eventDate = new Date(filteredYear, filteredMonth - 1);
+  const PageHeadData = (
+    <Head>
+      <title>Filtered Events</title>
+      <meta
+        name="description"
+        content={`All events for ${filteredMonth}/${filteredYear}.`}
+      />
+    </Head>
+  );
   if (
     isNaN(filteredYear) ||
     isNaN(filteredMonth) ||
@@ -48,6 +69,7 @@ const EventsFilter = () => {
   ) {
     return (
       <>
+        {PageHeadData}
         <ErrorAlert>
           <p className="center">Invalid Filter. Please adjust your values</p>
         </ErrorAlert>
@@ -58,19 +80,10 @@ const EventsFilter = () => {
     );
   }
 
-  const filteredEvents = loadedEvents.filter(event => {
-    const eventDate = new Date(event.date);
-    return (
-      eventDate.getFullYear() === filteredYear &&
-      eventDate.getMonth() === filteredMonth - 1
-    );
-  });
-
-  const eventDate = new Date(filteredYear, filteredMonth - 1);
-
   if (!filteredEvents || filteredEvents.length === 0) {
     return (
       <>
+        {PageHeadData}
         <ErrorAlert>
           <p className="center">There Is No Event For This Date</p>
         </ErrorAlert>
@@ -82,6 +95,7 @@ const EventsFilter = () => {
   }
   return (
     <>
+      {PageHeadData}
       <ResultsTitle date={eventDate} />
       <EventList items={filteredEvents} />
     </>
