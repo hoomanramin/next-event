@@ -23,6 +23,7 @@ const EventsDetails = () => {
       <EventContent>
         <p>{event.description}</p>
       </EventContent>
+      <Comments eventId={event.id} />
     </>
   );
 };
