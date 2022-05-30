@@ -2,6 +2,7 @@ import EventSummary from "../../components/eventDetails/eventSummary";
 import EventLogistics from "../../components/eventDetails/eventLogistics";
 import EventContent from "../../components/eventDetails/eventContent";
 import {getEventById, getFeaturedEvents} from "../../helper/api-utils";
+import Comments from "../../components/input/comments";
 import Head from "next/head";
 
 const EventsDetails = props => {

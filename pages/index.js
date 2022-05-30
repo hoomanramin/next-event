@@ -1,6 +1,7 @@
 import Head from "next/head";
 import EventList from "../components/events/eventList";
 import {getFeaturedEvents} from "../helper/api-utils";
+import NewsLetterRegistration from "../components/input/newsletter-registration";
 const HomePage = ({featuredEvents}) => {
   return (
     <div>
@@ -8,6 +9,7 @@ const HomePage = ({featuredEvents}) => {
         <title>NextJS Events</title>
         <meta name="description" content="Find a lot of great events in NY" />
       </Head>
+      <NewsLetterRegistration />
       <EventList items={featuredEvents} />
     </div>
   );
